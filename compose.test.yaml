@@ -1,15 +1,22 @@
 services:
     php:
-        image: ${IMAGES_PREFIX:-}app-php
+        build:
+            context: .
+            target: frankenphp_test
         restart: unless-stopped
         environment:
             SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
             DATABASE_URL: pgsql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-sylius_%kernel.environment%}?serverVersion=${POSTGRES_VERSION:-16}&charset=${POSTGRES_CHARSET:-utf8}
             # The two next line can be removed after initial installation
             SYLIUS_VERSION: ${SYLIUS_VERSION:-}
+            XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+        extra_hosts:
+            # Ensure that host.docker.internal is correctly defined on Linux
+            - host.docker.internal:host-gateway
         volumes:
-            - caddy_data:/data
-            - caddy_config:/config
+            - ./:/app
+            - ./frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
+            - ./frankenphp/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
         ports:
             # HTTP
             -   target: 80
@@ -27,29 +34,17 @@ services:
     database:
         image: postgres:${POSTGRES_VERSION:-16}-alpine
         environment:
-            POSTGRES_DB: ${POSTGRES_DB:-sylius_dev}
+            POSTGRES_DB: ${POSTGRES_DB:-sylius_test}
             # You should definitely change the password in production
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
             POSTGRES_USER: ${POSTGRES_USER:-app}
         healthcheck:
-            test: [ "CMD", "pg_isready", "-d", "${POSTGRES_DB:-sylius_dev}", "-U", "${POSTGRES_USER:-app}" ]
+            test: [ "CMD", "pg_isready", "-d", "${POSTGRES_DB:-sylius_test}", "-U", "${POSTGRES_USER:-app}" ]
             timeout: 5s
             retries: 5
             start_period: 60s
         volumes:
             - database_data:/var/lib/postgresql/data:rw
-
-    nodejs:
-        image: node:${NODE_VERSION:-20}-alpine
-        working_dir: /app
-        entrypoint: [ "/bin/sh","-c" ]
-        command:
-            - |
-                npm install
-                npm run build
-        volumes:
-            - .:/app:rw,cached
-            - ./public:/app/public:rw,delegated
 
 volumes:
     caddy_data:

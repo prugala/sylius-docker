@@ -15,43 +15,70 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.{js,html,ts,tsx}]
+[*.feature]
+indent_style = space
+indent_size = 4
+
+[*.js]
+indent_style = space
 indent_size = 2
 
 [*.json]
+indent_style = space
 indent_size = 2
 
 [*.md]
+indent_style = space
+indent_size = 4
 trim_trailing_whitespace = false
 
-[*.sh]
-indent_style = tab
+[*.neon]
+indent_style = space
+indent_size = 4
 
-[*.xml.dist]
+[*.php]
+indent_style = space
+indent_size = 4
+
+[*.sh]
 indent_style = space
 indent_size = 4
 
 [*.{yaml,yml}]
+indent_style = space
+indent_size = 4
 trim_trailing_whitespace = false
 
-[.github/workflows/*.yml]
+[docker-compose.{yaml,yml}]
+indent_size = 2
+
+[docker-compose.*.{yaml,yml}]
+indent_size = 2
+
+[.babelrc]
+indent_style = space
 indent_size = 2
 
 [.gitmodules]
 indent_style = tab
+indent_size = 4
 
-[.php_cs.dist]
+[.php_cs{,.dist}]
 indent_style = space
 indent_size = 4
 
 [composer.json]
+indent_style = space
 indent_size = 4
 
-[{compose,docker-compose}.*.{yaml,yml}]
+[package.json]
+indent_style = space
 indent_size = 2
 
-[*.*Dockerfile]
-indent_style = tab
+[phpstan.dist.neon]
+indent_style = space
+indent_size = 4
 
-[*.*Caddyfile]
-indent_style = tab
+[phpunit.xml{,.dist}]
+indent_style = space
+indent_size = 4

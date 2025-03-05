@@ -5,33 +5,18 @@ You can customize the docker build process using these environment variables.
 > [!NOTE]  
 > All Symfony-specific environment variables are used only if no `composer.json` file is found in the project directory. 
 
-## Selecting a Specific Symfony Version
+## Selecting a Specific Sylius Version
 
-Use the `SYMFONY_VERSION` environment variable to select a specific Symfony version.
+Use the `SYLIUS_VERSION` environment variable to select a specific Symfony version.
 
-For instance, use the following command to install Symfony 6.4:
-
-On Linux:
-
-    SYMFONY_VERSION=6.4.* docker compose up -d --wait
-On Windows:
-
-    set SYMFONY_VERSION=6.4.* && docker compose up -d --wait&set SYMFONY_VERSION=
-
-## Installing Development Versions of Symfony
-
-To install a non-stable version of Symfony, use the `STABILITY` environment variable during the build.
-The value must be [a valid Composer stability option](https://getcomposer.org/doc/04-schema.md#minimum-stability).
-
-For instance, use the following command to use the development branch of Symfony:
+For instance, use the following command to install Sylius 2.0:
 
 On Linux:
 
-    STABILITY=dev docker compose up -d --wait
-
+    SYLIUS_VERSION=2.0.* docker compose up -d --wait
 On Windows:
-    
-    set STABILITY=dev && docker compose up -d --wait&set STABILITY=
+
+    set SYLIUS_VERSION=2.0.* && docker compose up -d --wait&set SYLIUS_VERSION=
 
 ## Using custom HTTP ports
 
